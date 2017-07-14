@@ -14,6 +14,11 @@
 		F43E94BD1F196B950067F966 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F43E94BB1F196B950067F966 /* LaunchScreen.storyboard */; };
 		F43E94C81F196B950067F966 /* ShareATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43E94C71F196B950067F966 /* ShareATests.swift */; };
 		F43E94D31F196B950067F966 /* ShareAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43E94D21F196B950067F966 /* ShareAUITests.swift */; };
+		F43E94E61F196C4D0067F966 /* four.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F43E94E21F196C4D0067F966 /* four.mp3 */; };
+		F43E94E71F196C4D0067F966 /* one.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F43E94E31F196C4D0067F966 /* one.mp3 */; };
+		F43E94E81F196C4D0067F966 /* three.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F43E94E41F196C4D0067F966 /* three.mp3 */; };
+		F43E94EB1F196D670067F966 /* two.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F43E94EA1F196D670067F966 /* two.mp3 */; };
+		F43E94ED1F196D7D0067F966 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43E94EC1F196D7D0067F966 /* AudioEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,18 +40,23 @@
 
 /* Begin PBXFileReference section */
 		F43E94AF1F196B950067F966 /* ShareA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShareA.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F43E94B21F196B950067F966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F43E94B21F196B950067F966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ShareA/AppDelegate.swift; sourceTree = "<group>"; };
 		F43E94B41F196B950067F966 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F43E94B71F196B950067F966 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F43E94B91F196B950067F966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F43E94B91F196B950067F966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ShareA/Assets.xcassets; sourceTree = "<group>"; };
 		F43E94BC1F196B950067F966 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F43E94BE1F196B950067F966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F43E94BE1F196B950067F966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ShareA/Info.plist; sourceTree = "<group>"; };
 		F43E94C31F196B950067F966 /* ShareATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShareATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F43E94C71F196B950067F966 /* ShareATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareATests.swift; sourceTree = "<group>"; };
 		F43E94C91F196B950067F966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F43E94CE1F196B950067F966 /* ShareAUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShareAUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F43E94D21F196B950067F966 /* ShareAUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAUITests.swift; sourceTree = "<group>"; };
 		F43E94D41F196B950067F966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F43E94E21F196C4D0067F966 /* four.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = four.mp3; sourceTree = "<group>"; };
+		F43E94E31F196C4D0067F966 /* one.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = one.mp3; sourceTree = "<group>"; };
+		F43E94E41F196C4D0067F966 /* three.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = three.mp3; sourceTree = "<group>"; };
+		F43E94EA1F196D670067F966 /* two.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = two.mp3; sourceTree = "<group>"; };
+		F43E94EC1F196D7D0067F966 /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +88,12 @@
 			isa = PBXGroup;
 			children = (
 				F43E94B11F196B950067F966 /* ShareA */,
+				F43E94E11F196BE20067F966 /* Audio */,
+				F43E94E01F196BAA0067F966 /* Support Files */,
+				F43E94B21F196B950067F966 /* AppDelegate.swift */,
+				F43E94BB1F196B950067F966 /* LaunchScreen.storyboard */,
+				F43E94B91F196B950067F966 /* Assets.xcassets */,
+				F43E94BE1F196B950067F966 /* Info.plist */,
 				F43E94C61F196B950067F966 /* ShareATests */,
 				F43E94D11F196B950067F966 /* ShareAUITests */,
 				F43E94B01F196B950067F966 /* Products */,
@@ -97,12 +113,8 @@
 		F43E94B11F196B950067F966 /* ShareA */ = {
 			isa = PBXGroup;
 			children = (
-				F43E94B21F196B950067F966 /* AppDelegate.swift */,
 				F43E94B41F196B950067F966 /* ViewController.swift */,
 				F43E94B61F196B950067F966 /* Main.storyboard */,
-				F43E94B91F196B950067F966 /* Assets.xcassets */,
-				F43E94BB1F196B950067F966 /* LaunchScreen.storyboard */,
-				F43E94BE1F196B950067F966 /* Info.plist */,
 			);
 			path = ShareA;
 			sourceTree = "<group>";
@@ -123,6 +135,26 @@
 				F43E94D41F196B950067F966 /* Info.plist */,
 			);
 			path = ShareAUITests;
+			sourceTree = "<group>";
+		};
+		F43E94E01F196BAA0067F966 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		F43E94E11F196BE20067F966 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				F43E94EC1F196D7D0067F966 /* AudioEngine.swift */,
+				F43E94E31F196C4D0067F966 /* one.mp3 */,
+				F43E94EA1F196D670067F966 /* two.mp3 */,
+				F43E94E41F196C4D0067F966 /* three.mp3 */,
+				F43E94E21F196C4D0067F966 /* four.mp3 */,
+			);
+			name = Audio;
+			path = ShareA;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,8 +265,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F43E94BD1F196B950067F966 /* LaunchScreen.storyboard in Resources */,
+				F43E94E71F196C4D0067F966 /* one.mp3 in Resources */,
 				F43E94BA1F196B950067F966 /* Assets.xcassets in Resources */,
+				F43E94E61F196C4D0067F966 /* four.mp3 in Resources */,
 				F43E94B81F196B950067F966 /* Main.storyboard in Resources */,
+				F43E94E81F196C4D0067F966 /* three.mp3 in Resources */,
+				F43E94EB1F196D670067F966 /* two.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F43E94ED1F196D7D0067F966 /* AudioEngine.swift in Sources */,
 				F43E94B51F196B950067F966 /* ViewController.swift in Sources */,
 				F43E94B31F196B950067F966 /* AppDelegate.swift in Sources */,
 			);
@@ -310,6 +347,7 @@
 				F43E94BC1F196B950067F966 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = ShareA;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

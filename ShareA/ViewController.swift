@@ -8,18 +8,44 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SendEngineData {
+
+    let audioEngine = AVEngine()
+    
+    @IBOutlet weak var playButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        audioEngine.delegate = self
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func stopPlay() {
+        playButton.toggleTitle(state: false)
     }
+}
 
+//MARK: - Actions
+extension ViewController {
+    @IBAction func segCtrlTapped(_ sender: UISegmentedControl) {
+        audioEngine.loadCurrentSong(index: sender.selectedSegmentIndex)
+        playButton.toggleTitle(state: audioEngine.isPlaying)
+    }
+    
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        audioEngine.startStopPlayer()
+        sender.toggleTitle(state: audioEngine.isPlaying)
+    }
+    
+    @IBAction func volumeSliderValueChanged(_ sender: UISlider) {
+         audioEngine.setVolume(volume: sender.value)
+    }
+}
 
+//MARK: - UIButton
+extension UIButton {
+    func toggleTitle(state: Bool) {
+        let title = state ? "Stop" : "Play"
+        self.setTitle(title, for: .normal)
+    }
 }
 
