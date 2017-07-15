@@ -21,7 +21,6 @@ extension AVAudioSession {
     }
     
     func setAudioSession(active: Bool) -> Bool {
-        
         do {
             try self.setActive(active)
             return true
