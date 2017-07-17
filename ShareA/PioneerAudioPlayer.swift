@@ -21,6 +21,7 @@ enum PioneerAudioPlayerStatus {
     case stopped
     case interuptionBegan
     case interuptionEnded
+    case secondaryAudioHint
     case finished
 }
 
@@ -35,6 +36,7 @@ public class PioneerAudioPlayer: NSObject {
     var status = PioneerAudioPlayerStatus.stopped
     var delegate: PioneerAudioPlayerDelegate?
     var volume: Float = 1
+    var secondaryHint = SecondaryHint.inactive
     
     override init() {
         super.init()
@@ -76,11 +78,19 @@ extension PioneerAudioPlayer {
         }
         
         if type == .began {
+            if AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+                secondaryHint = .active
+            }
             delegate?.player(player: self, statusChanged: .interuptionBegan)
         }
         else if type == .ended {
-            delegate?.player(player: self, statusChanged: .interuptionEnded)
-            self.resumeFromInterruption()
+            if secondaryHint != .active {
+                self.delegate?.player(player: self, statusChanged: .interuptionEnded)
+                self.resumeFromInterruption()
+            }else {
+                self.delegate?.player(player: self, statusChanged: .secondaryAudioHint)
+                secondaryHint = .inactive
+            }
         }
     }
 }
@@ -116,6 +126,7 @@ extension PioneerAudioPlayer {
         if player?.isPlaying == true {
             self.status = .playing
             delegate?.player(player: self, statusChanged: .playing)
+            secondaryHint = .inactive
         }
     }
     
@@ -151,5 +162,10 @@ extension PioneerAudioPlayer {
 extension PioneerAudioPlayer: AVAudioPlayerDelegate {
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         delegate?.player(player: self, statusChanged: .finished)
+        secondaryHint = .inactive
     }
+}
+
+enum SecondaryHint {
+    case inactive, active
 }

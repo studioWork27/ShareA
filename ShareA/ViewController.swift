@@ -110,6 +110,7 @@ extension PioneerAudioPlayerStatus {
                                                             .stopped : "Play",
                                                             .interuptionBegan : "Wait",
                                                             .interuptionEnded : "Pause",
+                                                            .secondaryAudioHint : "Play",
                                                             .finished : "Play"]
         return buttonTitleDict[self]!}
 }
