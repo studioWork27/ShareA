@@ -11,6 +11,12 @@ import UIKit
 class ViewController: UIViewController, AVEngineDelegate {
     
     let pioneerPlayer = PioneerAudioPlayer()
+    let buttonTitleDict: [PioneerAudioPlayerStatus : String] = [.playing : "Pause",
+                                                        .paused: "Play",
+                                                        .stopped : "Play",
+                                                        .interuptionBegan : "Wait",
+                                                        .interuptionEnded : "Pause",
+                                                        .finished : "Play"]
     
     @IBOutlet weak var playButton: UIButton!
 
@@ -66,7 +72,13 @@ extension ViewController: PioneerAudioPlayerDelegate {
     
     func player(player: PioneerAudioPlayer, statusChanged status: PioneerAudioPlayerStatus) {
         print("Audio Player Status Changed: \(status)")
-        switch status {
+        
+        let buttonTitle = buttonTitleDict[status]
+        DispatchQueue.main.async {
+            self.playButton.setTitle(buttonTitle, for: .normal)
+        }
+        
+      /*  switch status {
         case .playing:
             playButton.setTitle("Pause", for: .normal)
             break
@@ -85,7 +97,7 @@ extension ViewController: PioneerAudioPlayerDelegate {
         case .finished:
             playButton.setTitle("Play", for: .normal)
             break
-        }
+        }*/
         
     }
     
