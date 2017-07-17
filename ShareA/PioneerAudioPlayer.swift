@@ -34,6 +34,7 @@ public class PioneerAudioPlayer: NSObject {
     fileprivate var player: AVAudioPlayer?
     var status = PioneerAudioPlayerStatus.stopped
     var delegate: PioneerAudioPlayerDelegate?
+    var volume: Float = 1
     
     override init() {
         super.init()
@@ -79,6 +80,7 @@ extension PioneerAudioPlayer {
         }
         else if type == .ended {
             delegate?.player(player: self, statusChanged: .interuptionEnded)
+            self.resumeFromInterruption()
         }
     }
 }
@@ -117,6 +119,12 @@ extension PioneerAudioPlayer {
         }
     }
     
+    func resumeFromInterruption() {
+        player?.volume = 0
+        resume()
+        player?.setVolume(volume, fadeDuration: 1.5)
+    }
+    
     func stop() {
         player?.stop()
         if player?.isPlaying == false {
@@ -134,7 +142,8 @@ extension PioneerAudioPlayer {
     }
     
     func setVolume(volume: Float) {
-        player?.volume = volume
+        self.volume = volume
+        player?.volume = self.volume
     }
 }
 
