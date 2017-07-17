@@ -33,6 +33,7 @@ class AVEngine: NSObject {
         super.init()
         initEngine()
         setAudioSessionCategory()
+        setAudioSession(active: true)
         postNotifications()
         for name in Song.all {
             audioFileDict[name] = loadAudioFile(title: name.description)
@@ -44,11 +45,13 @@ class AVEngine: NSObject {
     }
     
     func initEngine() {
+        print("Init engine...")
         engine.attach(playerNode)
         engine.connect(playerNode, to: mixer, format: mixer.outputFormat(forBus: 0))
     }
     
     func stopEngine() {
+        print("Stopping Engine")
         playerNode.stop()
         engine.stop()
         engine.detach(playerNode)
@@ -74,6 +77,9 @@ class AVEngine: NSObject {
 //MARK: - Play
 extension AVEngine {
     func startStopPlayer() {
+    
+        
+        
         isPlaying = !isPlaying
         switch isPlaying {
         case false:
@@ -145,6 +151,21 @@ extension AVEngine {
 
             if headphonesConnected {
                 print("headphonesConnected")
+                print(engine)
+//                do {
+//                    try engine.start()
+//                } catch {
+//                    print(error)
+//                }
+//                if !engine.isRunning {
+//                    do {
+//                        try engine.start()
+//                    } catch {
+//                        print(error)
+//                    }
+//                }
+                playerNode.pause()
+                playerNode.play()
             }
         case .oldDeviceUnavailable:
             if let previousRoute =
@@ -159,7 +180,8 @@ extension AVEngine {
                 }
             }
             
-        default: ()
+        default:
+            print(reason)
             
         }
     }
