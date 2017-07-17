@@ -12,7 +12,7 @@ import AVFoundation
 extension AVAudioSession {
     func setAudioSessionCategory(category: String) -> Bool{
         do {
-            try self.setCategory(category)
+            try self.setCategory(category, with: .duckOthers)
             return true
         } catch {
             print("category \(error)")
