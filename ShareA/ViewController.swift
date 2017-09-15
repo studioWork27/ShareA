@@ -1,125 +1,142 @@
+
 //
 //  ViewController.swift
-//  ShareA
+//  EventKitUITest
 //
-//  Created by Home on 7/14/17.
+//  Created by Home on 3/5/17.
 //  Copyright © 2017 Home. All rights reserved.
 //
 
+///////
+/*
+ Things to look at:
+    if granted permission on 1st run, access to calendar data not available till
+    you rerun project
+ 
+    'Reading from private effective user settings.' 
+        when you edit calendars(try to add new calendar) in chooser
+ 
+    constraint problems when you tap cell -> event details vc
+ 
+    'EKAlarmsViewModel was initialized with a nil calendarItem.' 
+        when you pop back from event details vc
+ 
+    setting alarms in event details vc doesn't work
+ 
+    'Need the following entitlement in order to determine if MobileCal has location authorization required to do location predictions: com.apple.locationd.effective_bundle' 
+            when you try to edit event details vc
+ 
+    anything else you may see that may assist project
+*/
+///////
+
 import UIKit
+import EventKit
+import EventKitUI
 
-class ViewController: UIViewController, AVEngineDelegate {
+class ViewController: UIViewController {
+
+    var data = EventData()
     
-    let pioneerPlayer = PioneerAudioPlayer()
+    @IBOutlet weak var tableview: UITableView!
 
-    @IBOutlet weak var playButton: UIButton!
+    override func viewWillAppear(_ animated: Bool) {
+        tableview.reloadData()
+    }
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        pioneerPlayer.delegate = self
+//MARK: - TableView
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return data.multiCalendarArray.count
     }
     
-    func stopPlay(engine: AVEngine) {
-        playButton.toggleTitle(state: false)
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return data.multiCalendarArray[section].calendarTitle
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.multiCalendarArray[section].calendarItems.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        let cellData = data.multiCalendarArray[indexPath.section].calendarItems[indexPath.row]
+        cell?.textLabel?.text = cellData.title
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let event = data.multiCalendarArray[indexPath.section].calendarItems[indexPath.row]
+        let controller = EKEventViewController()
+        controller.event = event
+        controller.delegate = self
+        controller.allowsEditing = true
+        self.navigationController?.pushViewController(controller, animated: true)
+        tableview.deselectRow(at: indexPath, animated: false)
     }
 }
 
 //MARK: - Actions
 extension ViewController {
-    @IBAction func segCtrlTapped(_ sender: UISegmentedControl) {
-        let song = Song.all[sender.selectedSegmentIndex]
-        if let fileURL = getSongURL(song: song) {
-            if pioneerPlayer.playSoundFromURL(url: fileURL) {
-                print("Setup Audio to play")
-            }
-        }
-    }
-    
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        if pioneerPlayer.hasAudio() {
-            if sender.title(for: .normal) == "Play" {
-                pioneerPlayer.resume()
-            } else {
-                pioneerPlayer.pause()
-            }
-        } else {
-            if let fileURL = getSongURL(song: Song.one) {
-                if pioneerPlayer.playSoundFromURL(url: fileURL) {
-                    print("Setup Audio to play")
-                }
-            }
-        }
-    }
-    
-    @IBAction func volumeSliderValueChanged(_ sender: UISlider) {
-        pioneerPlayer.setVolume(volume: sender.value)
-    }
-    
-    func getSongURL(song: Song) -> URL? {
-        return Bundle.main.url(forResource: song.description, withExtension: "mp3")
-
-    }
-}
-
-
-extension ViewController: PioneerAudioPlayerDelegate {
-    
-    func player(player: PioneerAudioPlayer, statusChanged status: PioneerAudioPlayerStatus) {
-        print("Audio Player Status Changed: \(status)")
-
-        DispatchQueue.main.async {
-            self.playButton.setTitle(status.title, for: .normal)
-        }
+    @IBAction func calendarBtn(_ sender: UIButton) {
+        let calendarChooser = EKCalendarChooser(selectionStyle: EKCalendarChooserSelectionStyle.multiple, displayStyle: EKCalendarChooserDisplayStyle.allCalendars , eventStore: data.eventStore)
         
-      /*  switch status {
-        case .playing:
-            playButton.setTitle("Pause", for: .normal)
-            break
-        case .paused:
-            playButton.setTitle("Play", for: .normal)
-            break
-        case .stopped:
-            playButton.setTitle("Play", for: .normal)
-            break
-        case .interuptionBegan:
-            playButton.setTitle("Wait", for: .normal)
-            break
-        case .interuptionEnded:
-            playButton.setTitle("Pause", for: .normal)
-            break
-        case .finished:
-            playButton.setTitle("Play", for: .normal)
-            break
-        }*/
-        
+        calendarChooser.navigationItem.leftBarButtonItem = calendarChooser.editButtonItem
+        calendarChooser.delegate = self
+        calendarChooser.showsDoneButton = true
+        if !data.selectedCalendars.isEmpty {
+            calendarChooser.selectedCalendars = data.selectedCalendars
+        }
+        self.navigationController?.pushViewController(calendarChooser, animated: true)
     }
     
-    func player(player: PioneerAudioPlayer, switchedAudioOutputType output: PioneerAudioOutputType) {
-        print("Audio Player Output Changed: \(output)")
-        if output == .speaker {
-            player.stop()
-        }
+    @IBAction func addBtn(_ sender: UIButton) {
+        let controller = EKEventEditViewController()
+        controller.eventStore = data.eventStore
+        controller.editViewDelegate = self
+        self.present(controller, animated: true, completion: nil)
     }
 }
 
-//MARK: - Button Title
-extension PioneerAudioPlayerStatus {
-    var title: String {
-        let buttonTitleDict: [PioneerAudioPlayerStatus : String] = [.playing : "Pause",
-                                                            .paused: "Play",
-                                                            .stopped : "Play",
-                                                            .interuptionBegan : "Wait",
-                                                            .interuptionEnded : "Pause",
-                                                            .secondaryAudioHint : "Play",
-                                                            .finished : "Play"]
-        return buttonTitleDict[self]!}
-}
-
-//MARK: - UIButton
-extension UIButton {
-    func toggleTitle(state: Bool) {
-        let title = state ? "Stop" : "Play"
-        self.setTitle(title, for: .normal)
+//MARK: - EventKit Delegates
+extension ViewController: EKCalendarChooserDelegate, EKEventEditViewDelegate, EKEventViewDelegate {
+    // CalendarChooser Delegate
+    func calendarChooserDidCancel(_ calendarChooser: EKCalendarChooser) {
+        calendarChooser.navigationController!.popViewController(animated: true)
+    }
+    
+    func calendarChooserDidFinish(_ calendarChooser: EKCalendarChooser) {
+        data.selectedCalendars = calendarChooser.selectedCalendars
+        data.reloadCalendars()
+        calendarChooser.navigationController!.popViewController(animated: true)
+        tableview.reloadData()
+    }
+    
+    //EventViewController Delegate
+    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+        switch action {
+        case EKEventViewAction.done:
+            self.data.reloadCalendars()
+        case EKEventViewAction.deleted:
+            self.data.reloadCalendars()
+            controller.navigationController!.popViewController(animated: true)
+        case .responded:
+            break
+        }
+        tableview.reloadData()
+    }
+    
+    //EventEditViewController Delegate
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        switch action {
+        case .deleted, .saved:
+            self.data.reloadCalendars()
+            tableview.reloadData()
+        default:
+            break
+        }
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
